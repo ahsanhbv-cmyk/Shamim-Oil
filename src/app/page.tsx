@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Shield, Truck, Users, Phone, Mail, MapPin, Star } from 'lucide-react'
 import Logo, { LogoDark } from '@/components/Logo'
+import type { ElementType } from 'react'
 
 export default function HomePage() {
   return (
@@ -86,43 +87,41 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: () => (
-                  <svg viewBox="0 0 100 100" className="w-8 h-8">
-                    <path d="M50 5 C50 5 15 45 15 65 C15 85 30 95 50 95 C70 95 85 85 85 65 C85 45 50 5 50 5" fill="#074C2A"/>
-                    <text x="50" y="68" textAnchor="middle" fill="#D4AF37" fontWeight="700" fontSize="35">S</text>
-                  </svg>
-                ),
-                title: "Premium Quality",
-                description: "Only the finest oils from trusted manufacturers across Pakistan"
-              },
-              {
-                icon: Shield,
-                title: "Quality Assured",
-                description: "All products pass strict quality checks before delivery"
-              },
-              {
-                icon: Truck,
-                title: "Fast Delivery",
-                description: "Quick and reliable delivery to your doorstep within 24-48 hours"
-              },
-              {
-                icon: Users,
-                title: "24/7 Support",
-                description: "Our dedicated team is always here to help you"
-              },
-            ].map((feature, idx) => (
+            {(
+              [
+                {
+                  icon: (() => (
+                    <svg viewBox="0 0 100 100" className="w-8 h-8">
+                      <path d="M50 5 C50 5 15 45 15 65 C15 85 30 95 50 95 C70 95 85 85 85 65 C85 45 50 5 50 5" fill="#074C2A"/>
+                      <text x="50" y="68" textAnchor="middle" fill="#D4AF37" fontWeight="700" fontSize="35">S</text>
+                    </svg>
+                  )) as ElementType,
+                  title: "Premium Quality",
+                  description: "Only the finest oils from trusted manufacturers across Pakistan"
+                },
+                {
+                  icon: Shield as ElementType,
+                  title: "Quality Assured",
+                  description: "All products pass strict quality checks before delivery"
+                },
+                {
+                  icon: Truck as ElementType,
+                  title: "Fast Delivery",
+                  description: "Quick and reliable delivery to your doorstep within 24-48 hours"
+                },
+                {
+                  icon: Users as ElementType,
+                  title: "24/7 Support",
+                  description: "Our dedicated team is always here to help you"
+                },
+              ] as { icon: ElementType; title: string; description: string }[]
+            ).map((feature, idx) => (
               <div 
                 key={idx}
                 className="group p-8 rounded-2xl bg-gradient-to-br from-forest-50 to-gold-50 hover:from-forest-100 hover:to-gold-100 transition-all hover:shadow-xl hover:-translate-y-2"
               >
                 <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
-                  {typeof feature.icon === 'function' ? (
-                    <feature.icon />
-                  ) : (
-                    <feature.icon className="w-8 h-8 text-forest-900" />
-                  )}
+                  <feature.icon className="w-8 h-8 text-forest-900" />
                 </div>
                 <h3 className="font-display text-xl font-bold text-forest-700 mb-3">
                   {feature.title}
