@@ -1,0 +1,157 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+  CUSTOMER
+}
+
+enum OrderStatus {
+  NEW
+  PENDING
+  CONFIRMED
+  DISPATCHED
+  DELIVERED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+}
+
+model User {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  password       String
+  phone          String?
+  role           Role     @default(CUSTOMER)
+  employeeSalary Float?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  orders             Order[]
+  attendance         EmployeeAttendance[]
+  customerMessages   Message[]            @relation("CustomerMessages")
+  adminMessages      Message[]            @relation("AdminMessages")
+  cart               Cart?
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  name           String
+  company        String
+  category       String
+  cartonQuantity Int      @default(0)
+  price          Float
+  imageUrl       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  stockEntries StockEntry[]
+  orderItems   OrderItem[]
+  cartItems    CartItem[]
+}
+
+model StockEntry {
+  id               String   @id @default(cuid())
+  productId        String
+  quantityReceived Int
+  totalBill        Float
+  supplierName     String?
+  arrivalDate      DateTime @default(now())
+  createdAt        DateTime @default(now())
+
+  product  Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  payments StockPayment[]
+}
+
+model StockPayment {
+  id           String   @id @default(cuid())
+  stockEntryId String
+  amountPaid   Float
+  datePaid     DateTime @default(now())
+
+  stockEntry StockEntry @relation(fields: [stockEntryId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id               String      @id @default(cuid())
+  customerId       String
+  totalAmount      Float
+  status           OrderStatus @default(NEW)
+  confirmationSent Boolean     @default(false)
+  customerApproved Boolean     @default(false)
+  paymentMethod    String?
+  shippingAddress  String?
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  customer   User        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model EmployeeAttendance {
+  id         String           @id @default(cuid())
+  employeeId String
+  date       DateTime
+  status     AttendanceStatus
+
+  employee User @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, date])
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  customerId String
+  adminId    String?
+  message    String
+  reply      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  customer User  @relation("CustomerMessages", fields: [customerId], references: [id], onDelete: Cascade)
+  admin    User? @relation("AdminMessages", fields: [adminId], references: [id])
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+}
+
+model CartItem {
+  id        String @id @default(cuid())
+  cartId    String
+  productId String
+  quantity  Int
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, productId])
+}
+

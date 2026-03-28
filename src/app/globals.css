@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Lora:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 150 76% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 150 76% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 76% 16%;
+    --primary: 43 63% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 150 76% 16%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 43 20% 95%;
+    --muted-foreground: 150 30% 40%;
+    --accent: 43 40% 90%;
+    --accent-foreground: 150 76% 16%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 43 30% 85%;
+    --input: 43 30% 85%;
+    --ring: 43 63% 52%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 150 50% 5%;
+    --foreground: 43 40% 90%;
+    --card: 150 40% 8%;
+    --card-foreground: 43 40% 90%;
+    --popover: 150 40% 8%;
+    --popover-foreground: 43 40% 90%;
+    --primary: 43 63% 52%;
+    --primary-foreground: 150 76% 10%;
+    --secondary: 43 30% 20%;
+    --secondary-foreground: 43 40% 90%;
+    --muted: 150 30% 15%;
+    --muted-foreground: 43 20% 65%;
+    --accent: 150 30% 15%;
+    --accent-foreground: 43 40% 90%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 150 30% 20%;
+    --input: 150 30% 20%;
+    --ring: 43 63% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-forest-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gold-500 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gold-600;
+}
+
+/* Oil Drop Animation */
+@keyframes oil-drop {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-10px) scale(1.05);
+    opacity: 1;
+  }
+}
+
+.animate-oil-drop {
+  animation: oil-drop 3s ease-in-out infinite;
+}
+
+/* Shimmer Effect for Loading */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Glass Effect */
+.glass {
+  @apply bg-white/10 backdrop-blur-lg border border-white/20;
+}
+
+/* Gradient Text */
+.gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-500 to-gold-700;
+}
+
+/* Card Hover Effect */
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+}
+
