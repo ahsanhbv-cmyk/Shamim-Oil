@@ -3,9 +3,9 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
-export const dynamic = 'force-dynamic'
 import { stockPaymentSchema } from '@/lib/validations'
 
+export const dynamic = 'force-dynamic'
 // POST add payment to stock entry
 export async function POST(req: NextRequest) {
   try {

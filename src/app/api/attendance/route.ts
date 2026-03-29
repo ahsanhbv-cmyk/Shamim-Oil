@@ -3,9 +3,9 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
-export const dynamic = 'force-dynamic'
 import { attendanceSchema } from '@/lib/validations'
 
+export const dynamic = 'force-dynamic'
 // GET attendance records
 export async function GET(req: NextRequest) {
   try {
