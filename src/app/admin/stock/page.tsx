@@ -31,7 +31,8 @@ type Product = {
 
 type StockEntry = {
   id: string
-  product: { name: string; company: string }
+  product: { name: string; company: string } | null
+  itemDescription: string | null
   quantityReceived: number
   totalBill: number
   supplierName: string | null
@@ -400,8 +401,8 @@ export default function StockPage() {
                       <span className="font-medium text-forest-700">{entry.supplierName || 'N/A'}</span>
                     </TableCell>
                     <TableCell>
-                      <p className="font-medium">{entry.product?.name || 'N/A'}</p>
-                      <p className="text-xs text-forest-500">{entry.product?.company || 'N/A'}</p>
+                      <p className="font-medium">{entry.product?.name || entry.itemDescription || 'N/A'}</p>
+                      <p className="text-xs text-forest-500">{entry.product?.company || ''}</p>
                     </TableCell>
                     <TableCell className="text-right">{entry.quantityReceived}</TableCell>
                     <TableCell className="text-right font-semibold">{formatCurrency(entry.totalBill)}</TableCell>
@@ -447,7 +448,7 @@ export default function StockPage() {
             <form onSubmit={handleAddPayment} className="space-y-4">
               <div className="p-4 bg-forest-50 rounded-xl space-y-2">
                 <p className="font-semibold text-forest-700">{selectedEntry.supplierName}</p>
-                <p className="text-sm text-forest-600">{selectedEntry.product?.name || 'N/A'}</p>
+                <p className="text-sm text-forest-600">{selectedEntry.product?.name || selectedEntry.itemDescription || 'N/A'}</p>
                 <div className="grid grid-cols-3 gap-2 mt-3">
                   <div>
                     <p className="text-xs text-forest-500">Bill Amount</p>

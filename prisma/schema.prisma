@@ -62,14 +62,16 @@ model Product {
 
 model StockEntry {
   id               String   @id @default(cuid())
-  productId        String
+  productId        String?
+  itemDescription  String?
   quantityReceived Int
   totalBill        Float
   supplierName     String?
   arrivalDate      DateTime @default(now())
+  addedToStock     Boolean  @default(false)
   createdAt        DateTime @default(now())
 
-  product  Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product  Product?       @relation(fields: [productId], references: [id], onDelete: Cascade)
   payments StockPayment[]
 }
 
