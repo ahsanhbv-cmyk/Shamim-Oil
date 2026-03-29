@@ -93,14 +93,17 @@ export default function ProductsPage() {
         body: JSON.stringify(body),
       })
 
-      if (!res.ok) throw new Error('Failed to save product')
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Failed to save product')
+      }
 
       alert(`Product ${editingProduct ? 'updated' : 'created'} successfully!`)
       setIsDialogOpen(false)
       resetForm()
       fetchProducts()
     } catch (error) {
-      alert('Failed to save product')
+      alert(error instanceof Error ? error.message : 'Failed to save product')
     } finally {
       setSaving(false)
     }

@@ -22,7 +22,7 @@ export const productSchema = z.object({
   category: z.string().min(2, "Category is required"),
   cartonQuantity: z.number().min(0, "Quantity cannot be negative"),
   price: z.number().positive("Price must be positive"),
-  imageUrl: z.string().url().optional().nullable(),
+  imageUrl: z.union([z.string().url(), z.literal(''), z.null()]).optional(),
 })
 
 export const stockEntrySchema = z.object({
